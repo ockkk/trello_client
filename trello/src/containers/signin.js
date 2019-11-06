@@ -31,7 +31,6 @@ export default class signin extends Component {
   }
 
   handelLogin = async e => {
-    console.log(this.state)
     let loginInfo = {
       method: "POST",
       body: JSON.stringify(this.state),
@@ -40,10 +39,10 @@ export default class signin extends Component {
 
     let result = await fetch("http://127.0.0.1:8080/users/signin", loginInfo)
       .then(date => {return date.json()})
-    
-    this.setState({success: result.success})
+
     sessionStorage.setItem("token",result.token)
     alert(result.message)
+    this.setState({success: result.success})
   }
 
   render() {
