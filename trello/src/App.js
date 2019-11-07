@@ -1,26 +1,34 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { Component } from 'react';
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'
+import Signin from './containers/signin'
+import Signup from './containers/signup'
+import TodoList from './containers/todoList'
+import BoardList from './containers/boardList'
+import Userpage from './containers/userpage'
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+
+export default class App extends Component {
+  constructor(){
+    super()
+    this.state={
+      userName: "",
+      isLogin: null
+    }
+  }
+  render() {
+    return (
+      <div>
+      <Router>
+          <Route exact path="/" component={() => <Signin value= {this.state}/>}/>
+          <Route  path="/signup" component={Signup}/>
+          <Switch>
+            <Route exact path="/boards" component={BoardList}/>
+            <Route path="/boards/:id" component={TodoList}/>
+            <Route path="/info" component={Userpage}/>
+          </Switch>
+      </Router>
+      </div>
+   )
+  }
 }
 
-export default App;
