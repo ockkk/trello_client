@@ -1,10 +1,11 @@
 import React from 'react';
 import { Button } from 'reactstrap';
 
-const board = () => {
+const board = (props) => {
+  console.log(props)
   return (
     <div>
-      <Button color="primary"> jobsearching </Button>{' '}
+      <Button color="primary" size="lg"> {props.children} </Button>
     </div>
   );
 };

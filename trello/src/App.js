@@ -1,23 +1,30 @@
 import React, { Component } from 'react';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'
-import signin from './containers/signin'
-import signup from './containers/signup'
-import todoList from './containers/todoList'
-import boardList from './containers/boardList'
-import userpage from './containers/userpage'
+import Signin from './containers/signin'
+import Signup from './containers/signup'
+import TodoList from './containers/todoList'
+import BoardList from './containers/boardList'
+import Userpage from './containers/userpage'
 
 
 export default class App extends Component {
+  constructor(){
+    super()
+    this.state={
+      userName: "",
+      isLogin: null
+    }
+  }
   render() {
     return (
       <div>
       <Router>
-          <Route exact path="/" component={signin}/>
-          <Route exact path="/signup" component={signup}/>
+          <Route exact path="/" component={() => <Signin value= {this.state}/>}/>
+          <Route  path="/signup" component={Signup}/>
           <Switch>
-            <Route path="/ockkk" component={boardList}/>
-            <Route path="/ockkk/todolist" component={todoList}/>
-            <Route path="/info" component={userpage}/>
+            <Route exact path="/boards" component={BoardList}/>
+            <Route path="/boards/:id" component={TodoList}/>
+            <Route path="/info" component={Userpage}/>
           </Switch>
       </Router>
       </div>

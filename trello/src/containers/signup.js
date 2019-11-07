@@ -41,7 +41,6 @@ export default class signup extends Component {
 
     let result = await fetch("http://127.0.0.1:8080/users", message)
       .then(date => {return date.json()})
-    
     this.setState({success: result.success})
     alert(result.message)
   }
