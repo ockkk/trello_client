@@ -2,6 +2,7 @@ import React from 'react'
 import {Input, InputGroup, Button} from 'reactstrap'
 
 export default function addCtBtn(props) {
+  
   let addContainer= async () => {
     if(props.ct_add === ""){ 
       alert("내용을 입력해 주세요!!😑")  
@@ -20,10 +21,9 @@ export default function addCtBtn(props) {
       .then(date => date.json())
       .then(res => alert(res.message))
       .catch(err => console.log(err))
-    props.callBoard()
     props.click()
+    props.callBoard()
   }
-  console.log(props)
   return (
     <div>
       <Input onChange={props.change}/>
