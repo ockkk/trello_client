@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import Signout from "../components/signout"
-import { UncontrolledDropdown, DropdownToggle, DropdownMenu, DropdownItem,Button,  ListGroup, Input, InputGroupAddon, InputGroup } from 'reactstrap';
+import { Row, Col, UncontrolledDropdown, DropdownToggle, DropdownMenu, DropdownItem,Button,  ListGroup, Input, InputGroupAddon, InputGroup, Card, CardTitle } from 'reactstrap';
 import AddContainer from "../components/addCtBtn"
 export default class todoList extends Component {
   constructor(props){
@@ -195,8 +195,9 @@ export default class todoList extends Component {
       method: "DELETE",
       headers: {
         "Content-type": "application/json", 
-        token: sessionStorage.getItem("token")}
+        token: sessionStorage.getItem("token")
       }
+    }
     
     await fetch(`http://127.0.0.1:8080/cards/${cd_key}`, message)
       .then(date => date.json())
@@ -206,59 +207,87 @@ export default class todoList extends Component {
     this.callContainer();
   }
 
+  moveCard= async e => {
+    console.log(e.target.id, "/////", this.state.cdKey)
+    let cd_key = this.state.cdKey
+    let ct_key = e.target.id
+    let message = {
+      method: "PUT",
+      body:JSON.stringify({"ct_key":ct_key}),
+      headers: {
+        "Content-type": "application/json",
+        token: sessionStorage.getItem("token") 
+      }
+    }
+
+    await fetch(`http://127.0.0.1:8080/cards/${cd_key}/move`, message)
+      .then(date => date.json())
+      .catch(err => console.log(err.toString()))
+
+    this.callContainer();
+    this.setState({
+      cdKey: ""
+    })
+  }
   render() {
     console.log(this.state)
     return (
       <div>
         <Signout/>
-        <UncontrolledDropdown>
-          <DropdownToggle caret>
-            Boards
-          </DropdownToggle>
-          <DropdownMenu>
-            <DropdownItem>Another Action</DropdownItem>
-          </DropdownMenu>
-        </UncontrolledDropdown>
         {this.state.containers.map((con, index) => 
-        <Button color='light' className='border-light' key={con.ct_key} cardVal={con.cards}>
-          <UncontrolledDropdown >
-            <DropdownToggle caret color="white">
-              {con.ct_name}
-            </DropdownToggle>
-            <DropdownMenu>
-              <Input onChange={this.handleUpdateCtName}/>
-              <DropdownItem id={con.ct_key} onClick={this.updateContainer}>수정</DropdownItem>
-              <DropdownItem divider/>
-              <DropdownItem id={con.ct_key} onClick={this.deleteContainer}>삭제</DropdownItem>
-            </DropdownMenu>
-          </UncontrolledDropdown>
-          <ListGroup key={index}>
-          {con.cards.map((card, index)=> 
-            <InputGroup key={index}>
-              <Input style={{border: "0px", backgroundColor: "", margin:"2px", fontWeight: "bold"}}
-                id={card.cd_key} 
-                key={card.cd_key} 
-                placeholder={card.cd_name}
-                type="textarea"
-                onClick={this.handleCdKey} 
-                onChange={this.handleModifyCdName}
-                onKeyPress={this.appKeyPress}
-              />              
-              <InputGroupAddon addonType="append">
-                <Button color="white" id={card.cd_key} onClick={this.deleteCard}>x</Button>
-              </InputGroupAddon>
-            </InputGroup>
-            )}
-              {
-                <InputGroup>
-                <Input type="textarea" placeholder="something to do?" onChange={this.handleAddCdName}/>
-                <InputGroupAddon addonType="append">
-                  <Button color="success" onClick={this.addCard} id={con.ct_key}>add</Button>
-                </InputGroupAddon>
-              </InputGroup>
-              }
-          </ListGroup>
-        </Button>)}
+        <Row key={index}>
+          <Col sm={4}>
+            <Card body color='' id={con.ct_key} key={con.ct_key} cardVal={con.cards} style={{margin: "10px"}}>
+              <div>
+              <CardTitle style={{position: "relative", float: "left", fontWeight:"bold"}}>
+                {con.ct_name}
+              </CardTitle>
+              <UncontrolledDropdown>
+                <DropdownToggle caret color="" style={{position: "relative", float: "right"}}/>
+                <DropdownMenu>
+                  <Input onChange={this.handleUpdateCtName}/>
+                  <DropdownItem id={con.ct_key} onClick={this.updateContainer}>수정</DropdownItem>
+                  <DropdownItem divider/>
+                  <DropdownItem id={con.ct_key} onClick={this.deleteContainer}>삭제</DropdownItem>
+                </DropdownMenu>
+              </UncontrolledDropdown>
+              {this.state.cdKey &&  
+              <Button id={con.ct_key} onClick={this.moveCard} style={{position: "relative", float: "right", backgroundColor:"white", border: "none"}}>
+                🙂
+              </Button>}
+              </div>
+              <ListGroup key={index}>
+              {con.cards.map((card, index)=> 
+                <InputGroup key={index} >
+                  <Card color="" id={card.cd_key} onClick={this.handleCdKey} style={{width: "100%", margin:"2px"}}>
+                    <Input style={{border: "0px", fontWeight: "", resize:"none", height: "60px", color:"primary"}}
+                      id={card.cd_key} 
+                      key={card.cd_key} 
+                      placeholder={card.cd_name}
+                      type="textarea"
+                      onClick={this.handleCdKey} 
+                      onChange={this.handleModifyCdName}
+                      onKeyPress={this.appKeyPress}
+                    />              
+                    <div>
+                    <Button color="white" id={card.cd_key} onClick={this.deleteCard} style={{position: "relative", float: "right"}}>x</Button>
+                    <Button color="white" id={card.cd_key} onClick={this.handleCdKey} style={{position: "relative", float: "right"}}>move</Button>
+                    </div>
+                  </Card>
+                </InputGroup>
+                )}
+                  {
+                    <InputGroup style={{margin: "2px"}}>
+                    <Input type="textarea" placeholder="something to do?" onChange={this.handleAddCdName} style={{marginRight:"1px", height:"60px", resize:"none"}}/>
+                    <InputGroupAddon addonType="append">
+                      <Button color="light" onClick={this.addCard} id={con.ct_key}>add</Button>
+                    </InputGroupAddon>
+                  </InputGroup>
+                  }
+              </ListGroup>
+            </Card>
+          </Col>
+        </Row>)}
         {this.state.addCtBtn ? (<AddContainer b_key = {this.props.match.params.id} 
                                               ct_add = {this.state.ct_add} 
                                               ct_modify = {this.state.ct_modify} 
