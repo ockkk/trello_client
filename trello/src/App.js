@@ -12,17 +12,24 @@ export default class App extends Component {
     super()
     this.state={
       userName: "",
-      isLogin: null
     }
   }
+
+  getUserName = name => {
+    this.setState({
+      userName: name
+    })
+  }
   render() {
+    console.log("[USERNAME]",this.state)
     return (
       <div>
+      <header> <h1>Trello</h1></header>
       <Router>
-          <Route exact path="/" component={() => <Signin value= {this.state}/>}/>
+          <Route exact path="/" component={() => <Signin getUserName={this.getUserName}/>}/>
           <Route  path="/signup" component={Signup}/>
           <Switch>
-            <Route exact path="/boards" component={BoardList}/>
+            <Route exact path="/boards" component={() => <BoardList userName={this.state.userName}/>}/>
             <Route path="/boards/:id" component={TodoList}/>
             <Route path="/info" component={Userpage}/>
           </Switch>
