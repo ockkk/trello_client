@@ -6,8 +6,11 @@ import { Button, Modal, ModalHeader, ModalBody, ModalFooter, ButtonGroup, Input,
 export default class boardList extends Component {
   state ={
     boards:[],
+    boardKey:"",
     addBoard:"",
-    modal: false
+    modifyBoard:"",
+    modal: false,
+    modifyModal: false
   }
   
   componentDidMount(){
@@ -20,8 +23,21 @@ export default class boardList extends Component {
     })
   }
 
+  handleModifyBoardName= e => {
+    this.setState({
+      modifyBoard: e.target.value
+    })
+  }
+
   handleModal= () => {
     this.state.modal ? this.setState({ modal : false}) : this.setState({ modal: true})
+  }
+
+  handleModifyModal= e => {
+    this.setState({
+      boardKey: e.target.id
+    })
+    this.state.modifyModal ? this.setState({ modifyModal : false}) : this.setState({ modifyModal: true})
   }
   
   callBoard= async () => {
@@ -72,7 +88,6 @@ export default class boardList extends Component {
 
   deleteBoard= async e => {
     let b_key = e.target.id
-    console.log(b_key)
     let message = {
       method: "DELETE",
       headers: {
@@ -88,30 +103,71 @@ export default class boardList extends Component {
 
     this.callBoard()
   }
+
+  updateBoard= async e => {
+    if(this.state.modifyBoard === ""){
+      alert("내용을 입력해 주세요!!")
+      return
+    }
+    let b_key = this.state.boardKey
+    let message = {
+      method: "PUT",
+      body: JSON.stringify({b_name:this.state.modifyBoard}),
+      headers: {
+        "Content-type": "application/json", 
+        token: sessionStorage.getItem("token")
+      }
+    }
+
+    await fetch(`http://127.0.0.1:8080/boards/${b_key}`, message)
+    .then(data => data.json())
+    .then(res => alert(res.message))
+    .catch(err => console.log(err))
+
+    this.setState({
+      boardKey: "",
+      modifyBoard: "",
+      modifyModal: false
+    })
+
+    this.callBoard()
+  }
+
   render() {
     console.log(this.state)
     return (
       <div>
-        <div>
-        <Signout/>
-        <Link to ="/info">
-          <Button color="warning">name</Button>
-        </Link>
-        </div>
+          <Signout/>
+          <Link to ="/info">
+            <Button color="warning" style={{width: "100px", height: "50px"}} >{this.props.userName}</Button>
+          </Link>
+      <div style={{}}>
         {
           this.state.boards.map((board, index) => 
-          <ButtonGroup key={index}>
+          <ButtonGroup key={index} vertical style={{margin:"10px"}}>
             <Link to = {`boards/${board.b_key}`} key={index}>
-              <Button color= "primary" key={board.b_key}>
+              <Button color= "primary" key={board.b_key} style={{width:"250px", height:"130px"}}>
                 {board.b_name}
               </Button>
             </Link>
-            <div/>
-              <Button color="primary" id={board.b_key} onClick={this.deleteBoard}>x</Button>
+              <ButtonGroup>
+                <Button id={board.b_key} onClick={this.handleModifyModal} color="light"> Modify </Button>
+                <Modal isOpen={this.state.modifyModal} fade={false} toggle={this.handleModifyModal}>
+                  <ModalHeader>Modify Board</ModalHeader>
+                  <ModalBody>
+                    <Input type="textarea" color="primary" onChange={this.handleModifyBoardName}/>
+                  </ModalBody>
+                  <ModalFooter>
+                    <Button color="primary" id={board.b_key} onClick={this.updateBoard}>Modify</Button>
+                    <Button color="secondary" onClick={this.handleModifyModal}>Cancel</Button>
+                  </ModalFooter>
+                </Modal>
+                <Button color="light" id={board.b_key} onClick={this.deleteBoard}>x</Button>
+              </ButtonGroup>
           </ButtonGroup>
           )
         }
-        <Button color="secondary" onClick={this.handleModal}>
+        <Button color="secondary" onClick={this.handleModal} style={{width:"250px", height:"130px", margin: "10px"}}>
           create new board
         </Button>
         <Modal isOpen={this.state.modal} fade={false} toggle={this.handleModal}>
@@ -124,6 +180,7 @@ export default class boardList extends Component {
             <Button color="secondary" onClick={this.handleModal}>Cancel</Button>
           </ModalFooter>
         </Modal>
+      </div>
       </div>
     )
   }
