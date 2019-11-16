@@ -1,7 +1,6 @@
 import React, {Component} from 'react';
-import Signout from '../components/signout'
-import { Link } from 'react-router-dom'
-import { Button, Modal, ModalHeader, ModalBody, ModalFooter, ButtonGroup, Input, Col, Row } from 'reactstrap';
+import { Link, Redirect } from 'react-router-dom'
+import { Button, Modal, ModalHeader, ModalBody, ModalFooter, ButtonGroup, Input} from 'reactstrap';
 
 export default class boardList extends Component {
   state ={
@@ -134,16 +133,10 @@ export default class boardList extends Component {
   }
 
   render() {
-    console.log(this.state)
     return (
-      <div>
-          <Signout/>
-          <Link to ="/info">
-            <Button color="warning" style={{width: "100px", height: "50px"}} >{this.props.userName}</Button>
-          </Link>
-      <div style={{}}>
-        {
-          this.state.boards.map((board, index) => 
+      <div style={{height:"100vh"}}>
+        {!sessionStorage.getItem("token") && <Redirect to="/"/>}
+        {this.state.boards.map((board, index) => 
           <ButtonGroup key={index} vertical style={{margin:"10px"}}>
             <Link to = {`boards/${board.b_key}`} key={index}>
               <Button color= "primary" key={board.b_key} style={{width:"250px", height:"130px"}}>
@@ -165,8 +158,7 @@ export default class boardList extends Component {
                 <Button color="light" id={board.b_key} onClick={this.deleteBoard}>x</Button>
               </ButtonGroup>
           </ButtonGroup>
-          )
-        }
+          )}
         <Button color="secondary" onClick={this.handleModal} style={{width:"250px", height:"130px", margin: "10px"}}>
           create new board
         </Button>
@@ -180,7 +172,6 @@ export default class boardList extends Component {
             <Button color="secondary" onClick={this.handleModal}>Cancel</Button>
           </ModalFooter>
         </Modal>
-      </div>
       </div>
     )
   }
