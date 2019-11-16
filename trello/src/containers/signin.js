@@ -49,7 +49,7 @@ export default class signin extends Component {
     return (
       <div>
       {
-        sessionStorage.getItem("token") && <Redirect to="/boards"/>
+        this.state.success && sessionStorage.getItem("token") && <Redirect to="/boards"/>
       }
       <Col sm="12" md={{ size: 4, offset: 4 }} style={{position:"relative", top:"110px"}}>
         <Container style={{border:"1px solid #d8d8d8", padding:"1em 1em 1em", borderRadius:"4px"}}>

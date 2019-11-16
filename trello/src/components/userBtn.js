@@ -73,7 +73,6 @@ export default class signout extends Component {
   }
 
   render() {
-    console.log("[USERBTNSTATE]",this.state)
     return (
       <div>
       {

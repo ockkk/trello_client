@@ -29,9 +29,8 @@ export default class App extends Component {
   }
 
   render() {
-    console.log(this.props)
     return (
-      <div style={{overflow: "auto", scrollbarWidth: "auto"}}>
+      <div style={{}}>
       <Router>
         <Navbar color="primary">
           <NavbarBrand href="/" className="title"> 

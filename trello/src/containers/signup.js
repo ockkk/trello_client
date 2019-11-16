@@ -32,7 +32,6 @@ export default class signup extends Component {
   }
 
   handleSignup = async e => {
-    console.log(this.state)
     if(this.state.name === ""){
       alert("name을 입력해 주세요!!🙅🏻‍♂️")
     }

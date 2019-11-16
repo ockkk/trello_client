@@ -121,7 +121,6 @@ export default class userpage extends Component {
   }
   
   render() {
-    console.log("[STATE]",this.state)
     return (
       <div>
         {this.state.changePassword && <Redirect to="/"/>}
