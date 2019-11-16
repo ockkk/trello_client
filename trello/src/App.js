@@ -1,24 +1,64 @@
 import React, { Component } from 'react';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'
-import signin from './containers/signin'
-import signup from './containers/signup'
-import todoList from './containers/todoList'
-import boardList from './containers/boardList'
-import userpage from './containers/userpage'
+import {Link} from 'react-router-dom'
+import {Navbar, NavbarBrand, NavItem, Nav, Button} from 'reactstrap'
+import "./App.css"
+import Signin from './containers/signin'
+import Signup from './containers/signup'
+import User from './components/userBtn'
+import TodoList from './containers/todoList'
+import BoardList from './containers/boardList'
+import Userpage from './containers/userpage'
 
 
 export default class App extends Component {
+  state={
+    userName:"name"
+  }
+
+  loginUserName= name => {
+    this.setState({
+      userName: name
+    })
+  }
+
+  logoutUserName= () => {
+    this.setState({
+      userName: "name"
+    })
+  }
+
   render() {
+    console.log(this.props)
     return (
-      <div>
+      <div style={{overflow: "auto", scrollbarWidth: "auto"}}>
       <Router>
-          <Route exact path="/" component={signin}/>
-          <Route exact path="/signup" component={signup}/>
-          <Switch>
-            <Route path="/ockkk" component={boardList}/>
-            <Route path="/ockkk/todolist" component={todoList}/>
-            <Route path="/info" component={userpage}/>
-          </Switch>
+        <Navbar color="primary">
+          <NavbarBrand href="/" className="title"> 
+            <h2 style={{position:"relative", top:"5px"}}>
+              Trello
+            </h2> 
+          </NavbarBrand>
+          <Nav>
+            <NavItem>
+            <Link to="/boards">
+              <Button color="outline-light"  style={{width: "100px", marginRight: "5px", height: "50px"}}> 
+                Board 
+              </Button> 
+            </Link>   
+            </NavItem>
+            <NavItem> 
+              <User userName={this.state.userName} loginUserName={this.loginUserName} logoutUserName={this.logoutUserName}/>
+            </NavItem>
+          </Nav>
+        </Navbar>
+        <Route exact path="/" component={() => <Signin />}/>
+        <Route  path="/signup" component={Signup}/>
+        <Switch>
+          <Route exact path="/boards" component={() => <BoardList/>}/>
+          <Route path="/boards/:id" component={TodoList}/>
+          <Route path="/userinfo" component={Userpage}/>
+        </Switch>
       </Router>
       </div>
    )

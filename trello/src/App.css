@@ -1,4 +1,4 @@
-.App {
+@import url('https://fonts.googleapis.com/css?family=Alatsi&display=swap');.App {
   text-align: center;
 }
 
@@ -19,4 +19,15 @@
 
 .App-link {
   color: #09d3ac;
+}
+
+.body{
+  display: flex; 
+  flex-wrap: nowrap; 
+  overflow-x: auto; 
+}
+
+.title{
+  font-family: 'Alatsi', sans-serif;
+  color: white;
 }
