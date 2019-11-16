@@ -1,5 +1,5 @@
 import React from 'react'
-import {Input, InputGroup, Button} from 'reactstrap'
+import {Input, InputGroup, Button, Card} from 'reactstrap'
 
 export default function addCtBtn(props) {
   
@@ -21,16 +21,19 @@ export default function addCtBtn(props) {
       .then(date => date.json())
       .then(res => alert(res.message))
       .catch(err => console.log(err))
+
     props.click()
-    props.callBoard()
+    props.callContainer()
   }
   return (
-    <div>
-      <Input onChange={props.change}/>
-      <InputGroup>
-      <Button onClick={addContainer}>Add list</Button>
-      <Button onClick={props.click}>X</Button>
+    <div style={{height: "50%"}}>
+      <Card style={{margin: "8px", padding: "5px", height:"30%"}}>
+      <Input onChange={props.change} type="textarea" style={{resize: "none", marginBottom:"2px", height:"100%"}}/>
+      <InputGroup style={{position:"relative" , float: "right"}}>
+        <Button onClick={addContainer} color="primary">Add list</Button>
+        <Button onClick={props.click} color="light">X</Button>
       </InputGroup>
+      </Card>
     </div>
   )
 }
