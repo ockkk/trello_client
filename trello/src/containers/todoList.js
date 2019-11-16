@@ -236,9 +236,8 @@ export default class todoList extends Component {
     })
   }
   render() {
-    // console.log(this.state)
     return (
-      <div style={{height:"100vh", background:"whitesmoke", scrollbarWidth: "auto"}}>
+      <div style={{height:"100vh", background:"whitesmoke"}}>
          <Row style={{height:"100%"}}>
         {this.state.containers.map((con, index) => 
           <Col sm={2.5} key={index} style={{height: "100%", paddingRight:"0px", paddingLeft:"0px"}}>
@@ -299,7 +298,7 @@ export default class todoList extends Component {
                                                   click = {this.handleChangeBtn}
                                                   change= {this.handleAddCtName}
                                                   callContainer= {this.callContainer}/>) 
-                                    : (<Button onClick={this.handleChangeBtn} color="primary" style={{ marginTop: "7px", marginLeft: "-7px", width:"100%"}}>+ Add another list</Button>)}
+                                    : (<Button onClick={this.handleChangeBtn} color="primary" style={{ marginTop: "7px", marginLeft: "-7px", width:"90%"}}>+ Add another list</Button>)}
           </Col>
         </Row>
       </div>
