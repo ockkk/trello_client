@@ -1,11 +1,11 @@
 import React, { Component } from 'react'
 import {Redirect} from 'react-router-dom'
-import { Button, Input, InputGroup, Modal, ModalFooter, ModalHeader, Form, FormGroup, Label, Col, Container} from 'reactstrap';
-import "../css/page.css"
+import { Button, Input, InputGroup, Modal, ModalFooter, ModalHeader, Form, FormGroup, Label, Col, Container, CardText} from 'reactstrap';
+
 
 export default class userpage extends Component {
   state ={
-    userCheck: true,
+    userCheck: false,
     changePassword: false,
     name: "",
     email: "",
@@ -41,23 +41,6 @@ export default class userpage extends Component {
     this.state.modal ? this.setState({ modal : false}) : this.setState({ modal: true})
   }
 
-  checkUser= async () => {
-    let CheckInfo = {
-      method: "POST",
-      body: JSON.stringify({password: this.state.password}),
-      headers: {
-        "Content-type": "application/json", 
-        token: sessionStorage.getItem("token")
-      }
-      }
-
-    let result = await fetch("http://127.0.0.1:8080/users/checkUser", CheckInfo)
-      .then(date => date.json())
-    
-    alert(result.message)
-    this.setState({userCheck: result.success})
-  }
-
   modifyName= async () => {
     if(this.state.name === ""){
       alert("값을 입력해 주세요")
@@ -70,25 +53,27 @@ export default class userpage extends Component {
         "Content-type": "application/json", 
         token: sessionStorage.getItem("token")
       }
-      }
+    }
 
     let result = await fetch("http://127.0.0.1:8080/users/", modifyInfo)
       .then(date => date.json())
+      .catch(err => console.log(err))
 
     alert(result.message)
     this.setState({userCheck: false})
   }
 
   modifyPassword= async () => {
-    if(this.state.password !== this.state.passwordCheck){
-      alert("비밀번호가 다릅니다!!😑")
-      return
-    }
-
     if((this.state.password || this.state.passwordCheck )=== ""){
       alert("값을 입력해 주세요 ✍🏻")
       return
     }
+    if(this.state.password !== this.state.passwordCheck){
+      alert("비밀번호가 다릅니다!!😑")
+      return
+    }
+      
+    
     let modifyInfo = {
       method: "PUT",
       body: JSON.stringify({password: this.state.password}),
@@ -103,6 +88,7 @@ export default class userpage extends Component {
 
     alert(result.message)
     this.setState({
+      changePassword: "true",
       password: "",
       passwordCheck: ""
     })
@@ -110,6 +96,11 @@ export default class userpage extends Component {
   }
 
   deleteUser= async () => {
+    if(this.state.password === ""){
+      alert("비밀번호를 입력해 주세요😠")
+      return 
+    }
+    
     let deleteInfo = {
       method: "DELETE",
       body: JSON.stringify({password: this.state.password}),
@@ -128,24 +119,22 @@ export default class userpage extends Component {
     })
     sessionStorage.removeItem("token")
   }
-
+  
   render() {
     console.log("[STATE]",this.state)
     return (
       <div>
-        {!sessionStorage.getItem("token") && <Redirect to="/"/>}
-        {this.state.userCheck ?     
-        (
-        <Col sm="12" md={{ size: 6, offset: 3 }} style={{position:"relative", top:"180px"}}>
-        <Container className="form">
-        <h1>User page</h1>
+        {this.state.changePassword && <Redirect to="/"/>}
+        <Col sm="12" md={{ size: 4, offset: 4 }} style={{position:"relative", top:"110px"}}>
+        <Container style={{border:"1px solid #d8d8d8", padding:"1em 1em 1em", borderRadius:"4px"}}>
+        <CardText style={{fontSize:"80px", marginBottom:"40px"}}>User Info</CardText>
         <Form>
           <FormGroup row>
             <Label  lg={3}>Change Name</Label>
             <Col lg={9}>
               <Input type="name" id="name" placeholder="name" onChange={this.handleNmae}/>
               <div style={{margin:"8px"}}/>
-              <Button color="info" size="lg" block onClick={this.signup} onClick={this.modifyName}>name modify</Button> 
+              <Button color="primary" size="lg" block onClick={this.signup} onClick={this.modifyName}>name modify</Button> 
             </Col>
           </FormGroup>
           <FormGroup row>
@@ -159,7 +148,7 @@ export default class userpage extends Component {
             <Col sm={9}>
               <Input type="password" id="password2" placeholder="password" onChange={this.handlePasswordCheck}/>
               <div style={{margin:"8px"}}/>
-              <Button color="info" size="lg" block onClick={this.signup} onClick={this.modifyPassword}>password modify</Button>
+              <Button color="primary" size="lg" block onClick={this.signup} onClick={this.modifyPassword}>password modify</Button>
             </Col>
           </FormGroup> 
             <Button color="secondary" onClick={this.handleModal} style={{width:"100%", height:"45px"}}>
@@ -169,19 +158,13 @@ export default class userpage extends Component {
             <ModalHeader>회원 탈퇴</ModalHeader>
             <ModalFooter>
               <Input type="password" id="password" placeholder="password" onChange={this.handlePassword}/>
-              <Button color="primary" onClick={this.deleteUser}>탈퇴</Button>
-              <Button color="secondary" onClick={this.handleModal}>Cancel</Button>
+              <Button color="light" onClick={this.deleteUser} style={{width:"30%"}}>탈퇴</Button>
+              <Button color="primary" onClick={this.handleModal}>Cancel</Button>
             </ModalFooter>
           </Modal>
          </Form>
          </Container>
          </Col>
-         )
-        :
-        <InputGroup>
-          <Input type="password" id="changePassword" placeholder="password" onChange={this.handlePassword}/>
-          <Button onClick={this.checkUser}>check</Button>
-        </InputGroup>}
       </div>
     )
   }
