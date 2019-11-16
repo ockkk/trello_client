@@ -1,5 +1,4 @@
 import React, { Component } from 'react'
-import Signout from "../components/signout"
 import { Row, Col, UncontrolledDropdown, DropdownToggle, DropdownMenu, DropdownItem,Button,  ListGroup, Input, InputGroupAddon, InputGroup, Card, CardTitle } from 'reactstrap';
 import AddContainer from "../components/addCtBtn"
 export default class todoList extends Component {
@@ -9,11 +8,13 @@ export default class todoList extends Component {
       boards: [],
       containers: [],
       cdKey:"",
+      moveCdKey:"",
       cd_add:"",
       cd_modify:"",
       ct_add:"",
       ct_modify:"",
-      addCtBtn: false
+      addCtBtn: false,
+
     }
   }
 
@@ -58,6 +59,12 @@ export default class todoList extends Component {
   handleCdKey= e => {
     this.setState({
       cdKey: e.target.id
+    })
+  }
+
+  handleMoveCdKey= e => {
+    this.setState({
+      moveCdKey: e.target.id
     })
   }
 
@@ -208,8 +215,7 @@ export default class todoList extends Component {
   }
 
   moveCard= async e => {
-    console.log(e.target.id, "/////", this.state.cdKey)
-    let cd_key = this.state.cdKey
+    let cd_key = this.state.moveCdKey
     let ct_key = e.target.id
     let message = {
       method: "PUT",
@@ -226,18 +232,17 @@ export default class todoList extends Component {
 
     this.callContainer();
     this.setState({
-      cdKey: ""
+      moveCdKey: ""
     })
   }
   render() {
-    console.log(this.state)
+    // console.log(this.state)
     return (
-      <div>
-        <Signout/>
+      <div style={{height:"100vh", background:"whitesmoke", scrollbarWidth: "auto"}}>
+         <Row style={{height:"100%"}}>
         {this.state.containers.map((con, index) => 
-        <Row key={index}>
-          <Col sm={4}>
-            <Card body color='' id={con.ct_key} key={con.ct_key} cardVal={con.cards} style={{margin: "10px"}}>
+          <Col sm={2.5} key={index} style={{height: "100%", paddingRight:"0px", paddingLeft:"0px"}}>
+            <Card body color='' id={con.ct_key} key={con.ct_key} style={{marginLeft: "7px", marginTop: "7px"}}>
               <div>
               <CardTitle style={{position: "relative", float: "left", fontWeight:"bold"}}>
                 {con.ct_name}
@@ -251,7 +256,7 @@ export default class todoList extends Component {
                   <DropdownItem id={con.ct_key} onClick={this.deleteContainer}>삭제</DropdownItem>
                 </DropdownMenu>
               </UncontrolledDropdown>
-              {this.state.cdKey &&  
+              {this.state.moveCdKey &&  
               <Button id={con.ct_key} onClick={this.moveCard} style={{position: "relative", float: "right", backgroundColor:"white", border: "none"}}>
                 🙂
               </Button>}
@@ -259,7 +264,7 @@ export default class todoList extends Component {
               <ListGroup key={index}>
               {con.cards.map((card, index)=> 
                 <InputGroup key={index} >
-                  <Card color="" id={card.cd_key} onClick={this.handleCdKey} style={{width: "100%", margin:"2px"}}>
+                  <Card color="" id={card.cd_key} style={{width: "100%", margin:"2px"}}>
                     <Input style={{border: "0px", fontWeight: "", resize:"none", height: "60px", color:"primary"}}
                       id={card.cd_key} 
                       key={card.cd_key} 
@@ -271,7 +276,7 @@ export default class todoList extends Component {
                     />              
                     <div>
                     <Button color="white" id={card.cd_key} onClick={this.deleteCard} style={{position: "relative", float: "right"}}>x</Button>
-                    <Button color="white" id={card.cd_key} onClick={this.handleCdKey} style={{position: "relative", float: "right"}}>move</Button>
+                    <Button color="white" id={card.cd_key} onClick={this.handleMoveCdKey} style={{position: "relative", float: "right"}}>move</Button>
                     </div>
                   </Card>
                 </InputGroup>
@@ -280,21 +285,23 @@ export default class todoList extends Component {
                     <InputGroup style={{margin: "2px"}}>
                     <Input type="textarea" placeholder="something to do?" onChange={this.handleAddCdName} style={{marginRight:"1px", height:"60px", resize:"none"}}/>
                     <InputGroupAddon addonType="append">
-                      <Button color="light" onClick={this.addCard} id={con.ct_key}>add</Button>
+                      <Button color="primary" onClick={this.addCard} id={con.ct_key}>add</Button>
                     </InputGroupAddon>
                   </InputGroup>
                   }
               </ListGroup>
             </Card>
+           </Col>)}
+          <Col sm={3}>
+            {this.state.addCtBtn ? (<AddContainer b_key = {this.props.match.params.id} 
+                                                  ct_add = {this.state.ct_add} 
+                                                  ct_modify = {this.state.ct_modify} 
+                                                  click = {this.handleChangeBtn}
+                                                  change= {this.handleAddCtName}
+                                                  callContainer= {this.callContainer}/>) 
+                                    : (<Button onClick={this.handleChangeBtn} color="primary" style={{ marginTop: "7px", marginLeft: "-7px", width:"100%"}}>+ Add another list</Button>)}
           </Col>
-        </Row>)}
-        {this.state.addCtBtn ? (<AddContainer b_key = {this.props.match.params.id} 
-                                              ct_add = {this.state.ct_add} 
-                                              ct_modify = {this.state.ct_modify} 
-                                              click = {this.handleChangeBtn}
-                                              change= {this.handleAddCtName}
-                                              callBoard= {this.callBoard}/>) 
-                                : (<Button onClick={this.handleChangeBtn}>+ Add another list</Button>)}
+        </Row>
       </div>
     )
   }
