@@ -47,7 +47,7 @@ export default class boardList extends Component {
         token: sessionStorage.getItem("token")}
       }
       
-      let boards = await fetch("http://127.0.0.1:8080/boards", message)
+      let boards = await fetch("http://54.180.144.153:8080/boards", message)
       .then(date => date.json())
       .catch(err => console.log(err))
       
@@ -71,7 +71,7 @@ export default class boardList extends Component {
       }
     }
 
-    await fetch("http://127.0.0.1:8080/boards", message)
+    await fetch("http://54.180.144.153:8080/boards", message)
       .then(data => data.json())
       .then(res => alert(res.message))
       .catch(err => console.log(err))
@@ -95,7 +95,7 @@ export default class boardList extends Component {
       }
     }
 
-    await fetch(`http://127.0.0.1:8080/boards/${b_key}`, message)
+    await fetch(`http://54.180.144.153:8080/boards/${b_key}`, message)
     .then(data => data.json())
     .then(res => alert(res.message))
     .catch(err => console.log(err))
@@ -118,7 +118,7 @@ export default class boardList extends Component {
       }
     }
 
-    await fetch(`http://127.0.0.1:8080/boards/${b_key}`, message)
+    await fetch(`http://54.180.144.153:8080/boards/${b_key}`, message)
     .then(data => data.json())
     .then(res => alert(res.message))
     .catch(err => console.log(err))

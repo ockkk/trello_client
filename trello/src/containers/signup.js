@@ -48,7 +48,7 @@ export default class signup extends Component {
       headers: {"Content-type": "application/json"}
       }
 
-    let result = await fetch("http://127.0.0.1:8080/users", message)
+    let result = await fetch("http://54.180.144.153:8080/users", message)
       .then(date => {return date.json()})
     this.setState({success: result.success})
     alert(result.message)

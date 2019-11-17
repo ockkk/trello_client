@@ -55,7 +55,7 @@ export default class userpage extends Component {
       }
     }
 
-    let result = await fetch("http://127.0.0.1:8080/users/", modifyInfo)
+    let result = await fetch("http://54.180.144.153:8080/users/", modifyInfo)
       .then(date => date.json())
       .catch(err => console.log(err))
 
@@ -83,7 +83,7 @@ export default class userpage extends Component {
       }
     }
 
-    let result = await fetch("http://127.0.0.1:8080/users/", modifyInfo)
+    let result = await fetch("http://54.180.144.153:8080/users/", modifyInfo)
       .then(date => date.json())
 
     alert(result.message)
@@ -110,7 +110,7 @@ export default class userpage extends Component {
       }
     }
 
-    let result = await fetch("http://127.0.0.1:8080/users/", deleteInfo)
+    let result = await fetch("http://54.180.144.153:8080/users/", deleteInfo)
       .then(date => date.json())
 
     alert(result.message)

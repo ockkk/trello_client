@@ -30,7 +30,7 @@ export default class todoList extends Component {
         token: sessionStorage.getItem("token")}
       }
       
-      let boards = await fetch("http://127.0.0.1:8080/boards", message)
+      let boards = await fetch("http://54.180.144.153:8080/boards", message)
       .then(date => date.json())
       .catch(err => console.log(err))
       
@@ -47,7 +47,7 @@ export default class todoList extends Component {
         token: sessionStorage.getItem("token")}
       }
 
-    let containers = await fetch(`http://127.0.0.1:8080/boards/${this.props.match.params.id}`, message)
+    let containers = await fetch(`http://54.180.144.153:8080/boards/${this.props.match.params.id}`, message)
       .then(date => date.json())
       .catch(err => console.log(err))
 
@@ -116,7 +116,7 @@ export default class todoList extends Component {
         token: sessionStorage.getItem("token")}
       }
     
-    await fetch(`http://127.0.0.1:8080/containers/${e.target.id}`, message)
+    await fetch(`http://54.180.144.153:8080/containers/${e.target.id}`, message)
       .then(date => date.json())
       .then(res => alert(res.message))
       .catch(err => console.log(err))
@@ -136,7 +136,7 @@ export default class todoList extends Component {
         token: sessionStorage.getItem("token")}
       }
     
-    await fetch(`http://127.0.0.1:8080/containers/${ct_key}`, message)
+    await fetch(`http://54.180.144.153:8080/containers/${ct_key}`, message)
       .then(date => date.json())
       .then(res => alert(res.message))
       .catch(err => console.log(err))
@@ -158,7 +158,7 @@ export default class todoList extends Component {
         token: sessionStorage.getItem("token")}
       }
     
-    await fetch(`http://127.0.0.1:8080/cards/${this.state.cdKey}`, message)
+    await fetch(`http://54.180.144.153:8080/cards/${this.state.cdKey}`, message)
       .then(date => date.json())
       .then(res => alert(res.message))
       .catch(err => console.log(err))
@@ -185,7 +185,7 @@ export default class todoList extends Component {
         token: sessionStorage.getItem("token")}
       }
     
-    await fetch(`http://127.0.0.1:8080/cards`, message)
+    await fetch(`http://54.180.144.153:8080/cards`, message)
       .then(date => date.json())
       .then(res => alert(res.message))
       .catch(err => console.log(err))
@@ -206,7 +206,7 @@ export default class todoList extends Component {
       }
     }
     
-    await fetch(`http://127.0.0.1:8080/cards/${cd_key}`, message)
+    await fetch(`http://54.180.144.153:8080/cards/${cd_key}`, message)
       .then(date => date.json())
       .then(res => alert(res.message))
       .catch(err => console.log(err))
@@ -226,7 +226,7 @@ export default class todoList extends Component {
       }
     }
 
-    await fetch(`http://127.0.0.1:8080/cards/${cd_key}/move`, message)
+    await fetch(`http://54.180.144.153:8080/cards/${cd_key}/move`, message)
       .then(date => date.json())
       .catch(err => console.log(err.toString()))
 

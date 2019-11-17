@@ -44,7 +44,7 @@ export default class signout extends Component {
       }
     }
 
-    let result = await fetch("http://127.0.0.1:8080/users/checkUser", CheckInfo)
+    let result = await fetch("http://54.180.144.153:8080/users/checkUser", CheckInfo)
       .then(date => date.json())
     
     alert(result.message)
@@ -63,7 +63,7 @@ export default class signout extends Component {
         token: sessionStorage.getItem("token")}
       }
       
-      let userName = await fetch("http://127.0.0.1:8080/users/token", message)
+      let userName = await fetch("http://54.180.144.153:8080/users/token", message)
       .then(date => date.json())
       .catch(err => console.log(err))
       

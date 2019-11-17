@@ -37,7 +37,7 @@ export default class signin extends Component {
       headers: {"Content-type": "application/json"}
       }
 
-    let result = await fetch("http://127.0.0.1:8080/users/signin", loginInfo)
+    let result = await fetch("http://54.180.144.153:8080/users/signin", loginInfo)
       .then(date => {return date.json()})
 
     sessionStorage.setItem("token",result.token)
