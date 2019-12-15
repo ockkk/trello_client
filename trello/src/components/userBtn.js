@@ -53,6 +53,8 @@ export default class signout extends Component {
       password: "",
       modal: false
     })
+
+    this.getUserName();
   }
 
   getUserName= async () => {
@@ -67,9 +69,9 @@ export default class signout extends Component {
       .then(date => date.json())
       .catch(err => console.log(err))
       
-      if(userName.u_name){
-        this.props.loginUserName(userName.u_name)
-      }
+    if(userName.u_name){
+      this.props.loginUserName(userName.u_name)
+    }
   }
 
   render() {
