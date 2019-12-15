@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
-import { Redirect } from 'react-router-dom'
-import { Button, Input} from 'reactstrap';
+import { Redirect, Link } from 'react-router-dom'
+import { Container, Button, Input, Form, FormGroup, Label, Col, CardTitle} from 'reactstrap';
 
 export default class signin extends Component {
   constructor(props){
@@ -37,7 +37,7 @@ export default class signin extends Component {
       headers: {"Content-type": "application/json"}
       }
 
-    let result = await fetch("http://127.0.0.1:8080/users/signin", loginInfo)
+    let result = await fetch("http://54.180.144.153:8080/users/signin", loginInfo)
       .then(date => {return date.json()})
 
     sessionStorage.setItem("token",result.token)
@@ -49,13 +49,32 @@ export default class signin extends Component {
     return (
       <div>
       {
-          this.state.success && <Redirect to="/boards"/>
-        }
-      <h2>Trello</h2>
-      <Input type="email" name="paemailssword" id="email" placeholder="email" onChange={this.handleEmail}/>
-      <Input type="password" name="password" id="password" placeholder="password" onChange={this.handlePw}/>
-      <Button color="info" size="lg" block onClick={this.handelLogin}>Signin</Button>
-      <Button color="info" size="lg" block>Signup</Button>
+        this.state.success && sessionStorage.getItem("token") && <Redirect to="/boards"/>
+      }
+      <Col sm="12" md={{ size: 4, offset: 4 }} style={{position:"relative", top:"110px"}}>
+        <Container style={{border:"1px solid #d8d8d8", padding:"1em 1em 1em", borderRadius:"4px"}}>
+          <CardTitle style={{fontSize: "80px", marginBottom: "40px"}}>Trello</CardTitle>
+          <Form>
+          <FormGroup row>
+            <Label for="exampleEmail" sm={2}>Email</Label>
+            <Col sm={10}>
+              <Input type="email" name="paemailssword" id="email" placeholder="email" onChange={this.handleEmail}/>
+            </Col>
+          </FormGroup>
+          <FormGroup row>
+            <Label for="exampleEmail" sm={2}>Password</Label>
+            <Col sm={10}>
+              <Input type="password" name="password" id="password" placeholder="password" onChange={this.handlePw}/>
+            </Col>
+          </FormGroup>      
+          <Button color="primary" size="lg" block onClick={this.handelLogin}>Signin</Button>
+          <Link to="/signup">
+          <div style={{margin: "10px"}}/>
+          <Button color="primary" size="lg" block>Signup</Button>
+          </Link>
+          </Form>
+        </Container>
+      </Col>
     </div>
     )
   }
