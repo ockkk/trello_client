@@ -5,7 +5,7 @@ todo application인 trello의 기본 기능들을 클론한 프로젝트입니�
 ![](./main.png)
 
 # 앱 실행 화면
-<iframe width="1635" height="779" src="https://www.youtube.com/embed/7x2Oy8dD7o8" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+[![trello](https://i9.ytimg.com/vi/7x2Oy8dD7o8/mq1.jpg?sqp=CKKWgfAF&rs=AOn4CLC6HX2n7NArKZBmTPzPAf6fyPW1NQ)](https://youtu.be/7x2Oy8dD7o8)
 
 # Front-end Skill
 react, bootstrap, reactstrap
