@@ -17,7 +17,7 @@ export default function addCtBtn(props) {
         token: sessionStorage.getItem("token")}
     }
 
-    await fetch("http://54.180.144.153:8080/containers", message)
+    await fetch("http://54.180.115.9:8080/containers", message)
       .then(date => date.json())
       .then(res => alert(res.message))
       .catch(err => console.log(err))

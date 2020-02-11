@@ -15,17 +15,26 @@ export default class App extends Component {
   state={
     userName:"name"
   }
+  
+  // componentDidMount(){
+  //   this.loginUserName()
+  // }
 
-  loginUserName= name => {
+  loginUserName= (name) => {
+    console.log(name)
     this.setState({
       userName: name
     })
   }
 
   logoutUserName= () => {
-    this.setState({
-      userName: "name"
-    })
+    console.log("실행")
+    console.log(sessionStorage.getItem("token"))
+    if(!sessionStorage.getItem("token")){
+      this.setState({
+        userName: "name"
+      })
+    }
   }
 
   render() {
@@ -33,10 +42,10 @@ export default class App extends Component {
       <div style={{}}>
       <Router>
         <Navbar color="primary">
-          <NavbarBrand href="/" className="title"> 
-            <h2 style={{position:"relative", top:"5px"}}>
+          <NavbarBrand  className="title"> 
+            <h1 style={{position:"relative", top:"5px", color:"white"}}>
               Trello
-            </h2> 
+            </h1> 
           </NavbarBrand>
           <Nav>
             <NavItem>
@@ -47,14 +56,14 @@ export default class App extends Component {
             </Link>   
             </NavItem>
             <NavItem> 
-              <User userName={this.state.userName} loginUserName={this.loginUserName} logoutUserName={this.logoutUserName}/>
+              <User userName={this.state.userName} logoutUserName={this.logoutUserName}/>
             </NavItem>
           </Nav>
         </Navbar>
-        <Route exact path="/" component={() => <Signin />}/>
+        <Route exact path="/" component={() => <Signin loginUserName={this.loginUserName} />}/>
         <Route  path="/signup" component={Signup}/>
         <Switch>
-          <Route exact path="/boards" component={() => <BoardList/>}/>
+          <Route exact path="/:name/boards" component={BoardList}/>
           <Route path="/boards/:id" component={TodoList}/>
           <Route path="/userinfo" component={Userpage}/>
         </Switch>

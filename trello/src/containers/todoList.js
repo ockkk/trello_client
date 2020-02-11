@@ -30,7 +30,7 @@ export default class todoList extends Component {
         token: sessionStorage.getItem("token")}
       }
       
-      let boards = await fetch("http://54.180.144.153:8080/boards", message)
+      let boards = await fetch("http://54.180.115.9:8080/boards", message)
       .then(date => date.json())
       .catch(err => console.log(err))
       
@@ -47,7 +47,7 @@ export default class todoList extends Component {
         token: sessionStorage.getItem("token")}
       }
 
-    let containers = await fetch(`http://54.180.144.153:8080/boards/${this.props.match.params.id}`, message)
+    let containers = await fetch(`http://54.180.115.9:8080/boards/${this.props.match.params.id}`, message)
       .then(date => date.json())
       .catch(err => console.log(err))
 
@@ -95,6 +95,13 @@ export default class todoList extends Component {
       ct_modify:e.target.value
     })
   }
+  
+  handleClickCancleMove= e =>{
+    console.log("취소실행!!")
+    this.setState({
+      moveCdKey: ""
+    })
+  }
 
   appKeyPress = (e) => {
     if (e.key === 'Enter') {
@@ -116,14 +123,15 @@ export default class todoList extends Component {
         token: sessionStorage.getItem("token")}
       }
     
-    await fetch(`http://54.180.144.153:8080/containers/${e.target.id}`, message)
+    await fetch(`http://54.180.115.9:8080/containers/${e.target.id}`, message)
       .then(date => date.json())
       .then(res => alert(res.message))
       .catch(err => console.log(err))
  
     this.callContainer();
     this.setState({
-      ct_modify: ""
+      ct_modify: "",
+      moveCdKey: ""
     })
   }
 
@@ -136,11 +144,14 @@ export default class todoList extends Component {
         token: sessionStorage.getItem("token")}
       }
     
-    await fetch(`http://54.180.144.153:8080/containers/${ct_key}`, message)
+    await fetch(`http://54.180.115.9:8080/containers/${ct_key}`, message)
       .then(date => date.json())
       .then(res => alert(res.message))
       .catch(err => console.log(err))
-
+    
+    this.setState({
+      moveCdKey: ""
+    })
     this.callContainer();
   }
 
@@ -158,7 +169,7 @@ export default class todoList extends Component {
         token: sessionStorage.getItem("token")}
       }
     
-    await fetch(`http://54.180.144.153:8080/cards/${this.state.cdKey}`, message)
+    await fetch(`http://54.180.115.9:8080/cards/${this.state.cdKey}`, message)
       .then(date => date.json())
       .then(res => alert(res.message))
       .catch(err => console.log(err))
@@ -166,7 +177,8 @@ export default class todoList extends Component {
     this.callContainer();
     this.setState({
       cdKey: "",
-      cd_modify: ""
+      cd_modify: "",
+      moveCdKey: ""
     })
   }
 
@@ -185,13 +197,14 @@ export default class todoList extends Component {
         token: sessionStorage.getItem("token")}
       }
     
-    await fetch(`http://54.180.144.153:8080/cards`, message)
+    await fetch(`http://54.180.115.9:8080/cards`, message)
       .then(date => date.json())
       .then(res => alert(res.message))
       .catch(err => console.log(err))
     
     this.setState({
-      cd_add:""
+      cd_add:"",
+      moveCdKey: ""
     })
     this.callContainer();
   }
@@ -206,11 +219,14 @@ export default class todoList extends Component {
       }
     }
     
-    await fetch(`http://54.180.144.153:8080/cards/${cd_key}`, message)
+    await fetch(`http://54.180.115.9:8080/cards/${cd_key}`, message)
       .then(date => date.json())
       .then(res => alert(res.message))
       .catch(err => console.log(err))
 
+    this.setState({
+      moveCdKey: ""
+    })
     this.callContainer();
   }
 
@@ -226,7 +242,7 @@ export default class todoList extends Component {
       }
     }
 
-    await fetch(`http://54.180.144.153:8080/cards/${cd_key}/move`, message)
+    await fetch(`http://54.180.115.9:8080/cards/${cd_key}/move`, message)
       .then(date => date.json())
       .catch(err => console.log(err.toString()))
 

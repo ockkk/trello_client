@@ -11,10 +11,6 @@ export default class signout extends Component {
     modal: false
   }
   
-  componentDidMount(){
-    this.getUserName();
-  }
-
   handlePassword= e =>{
     this.setState({
         password: e.target.value
@@ -26,6 +22,10 @@ export default class signout extends Component {
   }
 
   handleSignout= e => {
+    if(!sessionStorage.getItem("token")){
+      alert("로그인 해주세요!!") 
+      return
+    }
     sessionStorage.removeItem("token")
     alert("로그아웃 되었습니다.👋🏻")
     this.setState({
@@ -44,34 +44,19 @@ export default class signout extends Component {
       }
     }
 
-    let result = await fetch("http://54.180.144.153:8080/users/checkUser", CheckInfo)
+    let result = await fetch("http://54.180.115.9:8080/users/checkUser", CheckInfo)
       .then(date => date.json())
-    
+
+    if(result.message === "jwt malformed"){
+      alert("로그인 해주세요!!😠")
+      return
+    }
     alert(result.message)
     this.setState({
-      userCheck: result.success,
+      userCheck: result.success, 
       password: "",
       modal: false
     })
-
-    this.getUserName();
-  }
-
-  getUserName= async () => {
-    let message = {
-      method: "GET",
-      headers: {
-        "Content-type": "application/json", 
-        token: sessionStorage.getItem("token")}
-      }
-      
-      let userName = await fetch("http://54.180.144.153:8080/users/token", message)
-      .then(date => date.json())
-      .catch(err => console.log(err))
-      
-    if(userName.u_name){
-      this.props.loginUserName(userName.u_name)
-    }
   }
 
   render() {
